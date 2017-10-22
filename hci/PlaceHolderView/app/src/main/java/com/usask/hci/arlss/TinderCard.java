@@ -2,6 +2,7 @@ package com.usask.hci.arlss;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import com.mindorks.placeholderview.annotations.View;
 import com.mindorks.placeholderview.annotations.swipe.FingerLift;
 import com.mindorks.placeholderview.annotations.swipe.SwipeTouch;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -69,15 +71,10 @@ public class TinderCard {
                 .show();
 
         long tEnd = System.currentTimeMillis();
-        ArrayList<String> data = new ArrayList<String>();
-        data.add(Calendar.getInstance().getTime().toString());
-        data.add(userID + "");
-        data.add(interfaceID + "");
-        data.add(trial + "");
-        data.add((tEnd - tStart) / 1000.0 + "");
-        data.add(score + "");
+        String[] data = {Calendar.getInstance().getTime().toString(), userID + "", interfaceID + "", trial + "", mProfile.getID() + "",
+                (tEnd - tStart) / 1000.0 + "", score + ""};
 
-        Utils.writeCSV("12938_rlss.csv", data);
+        Utils.writeCSV(mContext, userID + "_" + interfaceID + ".csv", data);
     }
 
     @SwipeTouch

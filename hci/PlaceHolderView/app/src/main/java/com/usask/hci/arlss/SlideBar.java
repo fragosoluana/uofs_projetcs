@@ -26,6 +26,7 @@ public class SlideBar {
     private Context mContext;
     private DiscreteSeekBar seekBar;
     private Button submitButton;
+    private Profile profile;
 
     public SlideBar(Context mContext, SwipeDirectionalView mSwipeView, DiscreteSeekBar seekBar, Button submitButton, int userID) {
         this.mContext = mContext;
@@ -42,6 +43,7 @@ public class SlideBar {
         mSwipeView.SWIPE = false;
 
         for(Profile profile : Utils.loadProfiles(mContext)){
+            this.profile = profile;
             trial++;
             mSwipeView.addView(new TinderCard(mContext, profile, mSwipeView, userID, interfaceID, trial));
         }
@@ -83,12 +85,10 @@ public class SlideBar {
 
                 long tEnd = System.currentTimeMillis();
 
-                Log.i("EVENT", "DATE: " + Calendar.getInstance().getTime()
-                        + "\nUSER ID: " + userID
-                        + "\nINTERFACE ID: " + interfaceID
-                        + "\nTRIAL: " + trial
-                        + "\nELAPASED TIME: " + (tEnd - tStart) / 1000.0
-                        + "\nSCORE: " + seekBar.getProgress());
+                String[] data = {Calendar.getInstance().getTime().toString(), userID + "", interfaceID + "", trial + "", profile.getID() + "",
+                        (tEnd - tStart) / 1000.0 + "", seekBar.getProgress() + ""};
+
+                Utils.writeCSV(mContext, userID + "_" + interfaceID + ".csv", data);
             }
         });
 
